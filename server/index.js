@@ -8,7 +8,7 @@ app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-const CONNECTION_URL = '';
+const CONNECTION_URL = 'mongodb+srv://alangallardo:WpBZ7o1zZufg3J1B@cluster0.e0zey.mongodb.net/Singularity?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
