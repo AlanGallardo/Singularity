@@ -15,7 +15,6 @@ import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined';
 import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
 import RecordVoiceOverOutlinedIcon from '@material-ui/icons/RecordVoiceOverOutlined';
 
-
 import Styles from './styles';
 
 const NavBar = () => {
