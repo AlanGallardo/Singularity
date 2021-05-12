@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   AppBar,
   Avatar,
@@ -23,10 +24,25 @@ import loginImage from '../../resources/images/login.svg';
 
 const NavBar = () => {
   const classes = Styles();
-  const [ open, setOpen ] = useState(false);
-  const [ anchorEl, setAnchorEl ] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   const openMenu = Boolean(anchorEl);
-  const user = null;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+
+  const logout = () => {
+    dispatch({ type: 'LOGOUT' });
+    history.push('/');
+    setUser(null);
+    setAnchorEl(null);
+  };
+
+  useEffect(() => {
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem('profile')));
+  }, [location]);
 
   const openLoginMenu = (e) => {
     setAnchorEl(e.currentTarget);
@@ -83,17 +99,17 @@ const NavBar = () => {
           >
 
             {user ? (
-              <MenuItem key="login" id="login" onClick={closeLoginMenu}>
+              <MenuItem key="login" id="login" onClick={logout}>
                 <ExitToAppOutlinedIcon fontSize="small" />
                 Logout
               </MenuItem>
             ) : (
-              <MenuItem key="login" id="login" component={Link} to="/auth">
+              <MenuItem key="login" id="login" component={Link} to="/auth" onClick={closeLoginMenu}>
                 <ExitToAppOutlinedIcon fontSize="small" />
                 Login
               </MenuItem>
             )}
-            
+
           </Menu>
         </div>
         <div className={classes.sectionMobile}>
