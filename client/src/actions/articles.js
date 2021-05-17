@@ -1,11 +1,12 @@
 import { FETCH_ALL, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
-import * as api from '../api';
+import * as api from '../api/index.js';
 
 // Action Creators
 export const getArticles = () => async (dispatch) => {
   try {
     const { data } = await api.fetchArticles();
     dispatch({ type: FETCH_ALL, payload: data });
+    console.log(data);
   } catch (error) {
     console.log(error);
   }

@@ -5,26 +5,38 @@ import { GoogleLogin } from 'react-google-login';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
+import { signin, signup } from '../../actions/auth';
 import Icon from './icon';
 import Input from './Input';
 import Styles from './styles';
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirm: '' };
 
 const Auth = () => {
   const classes = Styles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword);
-  const switchMode = () => setIsSignup((prevIsSignup) => !prevIsSignup);
+  const switchMode = () => {
+    setIsSignup((prevIsSignup) => !prevIsSignup);
+    setShowPassword(false);
+  }
 
-  const handleSubmit = () => {
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if(isSignup)
+      dispatch(signup(formData, history));
+    else
+      dispatch(signin(formData, history));
   };
 
-  const handleChange = () => {
-
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const googleSuccess = async (res) => {

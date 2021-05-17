@@ -8,7 +8,6 @@ import { createArticle, updateArticle } from '../../actions/articles';
 
 const Form = ({ currentId, setCurrentId }) => {
   const [ articleData, setArticleData ] = useState({
-    author: '',
     title: '',
     description: '',
     tags: '',
@@ -17,39 +16,42 @@ const Form = ({ currentId, setCurrentId }) => {
   const article = useSelector((state) => currentId ? state.articles.find((p) => p._id === currentId) : null);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const user = JSON.parse(localStorage.getItem('profile'));
 
   useEffect(() => {
     if (article) setArticleData(article);
   }, [article])
 
+  const clear = () => {
+    setCurrentId(null);
+    setArticleData({ title: '', description: '', tags: '', bannerImage: '' });
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log(currentId);
     if (currentId)
-      dispatch(updateArticle(currentId, articleData));
+      dispatch(updateArticle(currentId, { ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
     else
-      dispatch(createArticle(articleData));
+      dispatch(createArticle({ ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
 
     clear();
   };
 
-  const clear = () => {
-    setCurrentId(null);
-    setArticleData({ author: '', title: '', description: '', tags: '', bannerImage: '', })
+  if(!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own articles and like other's articles.
+        </Typography>
+      </Paper>
+    )
   }
 
   return (
     <Paper className={classes.paper}>
       <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
         <Typography variant="h6">{currentId ? 'Editing' : 'Creating'} an Article</Typography>
-        <TextField
-          name="author"
-          variant="outlined"
-          label="Author"
-          fullWidth
-          value={articleData.author}
-          onChange={(e) => setArticleData({ ...articleData, author: e.target.value })}
-        />
         <TextField
           name="title"
           variant="outlined"
@@ -63,6 +65,7 @@ const Form = ({ currentId, setCurrentId }) => {
           variant="outlined"
           label="Description"
           fullWidth
+          multiline
           value={articleData.description}
           onChange={(e) => setArticleData({ ...articleData, description: e.target.value })}
         />

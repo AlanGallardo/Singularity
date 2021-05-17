@@ -13,7 +13,7 @@ const Home = () => {
   const classes = Styles();
 
   useEffect(() => {
-    dispatch(getArticles);
+    dispatch(getArticles());
   }, [currentId, dispatch]);
 
   return (

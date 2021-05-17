@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
@@ -22,23 +23,37 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 
 import { deleteArticle, likeArticle } from '../../../actions/articles';
+import loginImage from '../../../resources/images/login.svg';
 import Styles from './styles';
 
 const Article = ({ article, setCurrentId }) => {
-  const [ anchorEl, setAnchorEl ] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const classes = Styles();
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem('profile'));
+
+  const Likes = () => {
+    if (article.likes.length > 0) {
+      return article.likes.find((like) => like === (user?.result?.googleId || user?.result?._id))
+        ? (
+          <><ThumbUpAltIcon fontSize="small" />&nbsp;{article.likes.length > 2 ? `You and ${article.likes.length - 1} others` : `${article.likes.length} like${article.likes.length > 1 ? 's' : ''}`}</>
+        ) : (
+          <><ThumbUpAltOutlined fontSize="small" />&nbsp;{article.likes.length} {article.likes.length === 1 ? 'Like' : 'Likes'}</>
+        );
+    }
+
+    return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
+  };
 
   const openArticleMenu = (e) => {
     setAnchorEl(e.currentTarget);
   };
 
   const closeArticleMenu = (e, id) => {
-    if(e.currentTarget.id === 'edit')
+    if (e.currentTarget.id === 'edit')
       setCurrentId(id);
-    if(e.currentTarget.id === 'delete')
+    if (e.currentTarget.id === 'delete')
       dispatch(deleteArticle(id));
 
     setAnchorEl(null);
@@ -48,7 +63,7 @@ const Article = ({ article, setCurrentId }) => {
     <Card className={classes.card}>
       <CardMedia className={classes.media} image={article.bannerImage} title={article.title} />
       <div className={classes.overlay}>
-        <Typography variant="h6" className={classes.author}>{article.author}</Typography>
+        <Typography variant="h6" className={classes.author}>{article.name}</Typography>
         <Typography variant="caption">{moment(article.createdAt).fromNow()}</Typography>
       </div>
       <div className={classes.overlay2}>
@@ -61,18 +76,30 @@ const Article = ({ article, setCurrentId }) => {
           anchorEl={anchorEl}
           onClose={closeArticleMenu}
         >
-          <MenuItem key="edit" id="edit" className={classes.menuItems} onClick={(e) => closeArticleMenu(e, article._id)}>
+          <MenuItem
+            key="edit"
+            id="edit"
+            disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
+            className={classes.menuItems}
+            onClick={(e) => closeArticleMenu(e, article._id)}
+          >
             <EditOutlinedIcon fontSize="small" />
-            Edit Post
+            Edit Article
           </MenuItem>
-          <MenuItem key="delete" id="delete" className={classes.menuItems} onClick={(e) => closeArticleMenu(e, article._id)}>
+          <MenuItem
+            key="delete"
+            id="delete"
+            disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
+            className={classes.menuItems}
+            onClick={(e) => closeArticleMenu(e, article._id)}
+          >
             <DeleteOutlineOutlinedIcon fontSize="small" />
-            Delete Post
+            Delete Article
           </MenuItem>
         </Menu>
       </div>
       <div className={classes.infoCard}>
-        <Avatar alt={article.author} src="" className={classes.avatar} />
+        <Avatar alt={article.author} src={article?.authorImage ?? loginImage} className={classes.avatar} />
         <div className={classes.tagsContainer}>
           {article.tags.map((tag) => (
             <Chip className={classes.tag} color="default" size="small" label={tag} />
@@ -94,10 +121,8 @@ const Article = ({ article, setCurrentId }) => {
           <VisibilityIcon fontSize="small" />
           &nbsp; 13K Visualizations
         </Typography>
-        <Button size="small" color="primary" onClick={() => dispatch(likeArticle(article._id))}>
-          <ThumbUpAltIcon fontSize="small" />
-          &nbsp;
-          {article.likes}
+        <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likeArticle(article._id))}>
+          <Likes />
         </Button>
       </CardActions>
     </Card>

@@ -15,8 +15,8 @@ export const getArticles = async (req, res) => {
 }
 
 export const createArticle = async (req, res) => {
-  const { title, description, bannerImage, author, tags } = req.body;
-  const newArticleModel = new ArticleModel({ title, description, bannerImage, author, tags })
+  const article = req.body;
+  const newArticleModel = new ArticleModel({ ...article, author: req.userId, createdAt: new Date().toISOString() });
 
   try {
     await newArticleModel.save();
@@ -27,36 +27,49 @@ export const createArticle = async (req, res) => {
 }
 
 export const updateArticle = async (req, res) => {
-  const { id: _id } = req.params;
-  const article = req.body;
+  const { id } = req.params;
+  const { title, description, author, bannerImage, tags } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
-    return res.status(404).send('No article with that id');
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No article with id: ${id}`);
 
-  const updatedArticle = await ArticleModel.findByIdAndUpdate(_id, { ...article, _id }, { new: true });
+  const updatedArticle = { author, title, description, tags, bannerImage, _id: id };
+  
+  await ArticleModel.findByIdAndUpdate(id, updatedArticle, { new: true });
 
   res.json(updatedArticle);
 }
 
 export const deleteArticle = async (req, res) => {
-  const { id: _id } = req.params;
+  const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
+  if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send('No article with that id');
 
-  await ArticleModel.findByIdAndRemove(_id);
+  await ArticleModel.findByIdAndRemove(id);
 
   res.json({ message: 'Article deleted successfully' });
 }
 
 export const likeArticle = async (req, res) => {
-  const { id: _id } = req.params;
+  const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(_id))
+  if(!req.userId)
+    return res.json({ message: 'Unauthenticated' });
+
+  if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send('No article with that id');
 
-  const article = await ArticleModel.findById(_id);
-  const updatedArticle = await ArticleModel.findByIdAndUpdate(_id, { likes: article.likes + 1 }, { new: true });
+  const article = await ArticleModel.findById(id);
+  const index = article.likes.findIndex((id) => id === String(req.userId));
+
+  if(index === -1) {
+    article.likes.push(req.userId);
+  } else {
+    article.likes = article.likes.filter((id) => id !== String(req.userId));
+  }
+
+  const updatedArticle = await ArticleModel.findByIdAndUpdate(id, article, { new: true });
 
   res.json(updatedArticle);
 }
