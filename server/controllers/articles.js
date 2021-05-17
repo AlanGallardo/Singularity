@@ -14,6 +14,17 @@ export const getArticles = async (req, res) => {
   }
 }
 
+export const getArticlesBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  try {
+    const title = new RegExp(searchQuery, 'i');
+    const articles = await ArticleModel.find({ $or: [ { title }, { tags: { $in: tags.split(',') } }] });
+    res.json({ data: articles });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
 export const createArticle = async (req, res) => {
   const article = req.body;
   const newArticleModel = new ArticleModel({ ...article, author: req.userId, createdAt: new Date().toISOString() });

@@ -16,7 +16,6 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
     borderRadius: '15px',
     height: '100%',
-    width: theme.spacing(45),
     position: 'relative',
   },
   author: {
@@ -34,10 +33,10 @@ export default makeStyles((theme) => ({
   avatar: {
     position: 'relative',
     bottom: '50px',
-    left: '30px',
+    left: '20px',
     marginBottom: '-30px',
-    width: theme.spacing(12),
-    height: theme.spacing(12),
+    width: theme.spacing(10),
+    height: theme.spacing(10),
     border: '1px solid gray',
   },
   overlay: {
