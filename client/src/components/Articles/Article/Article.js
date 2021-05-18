@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Avatar,
   Button,
+  ButtonBase,
   Card,
   CardActions,
   CardContent,
@@ -11,7 +13,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Link,
   Typography,
 } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
@@ -31,6 +32,7 @@ const Article = ({ article, setCurrentId }) => {
   const open = Boolean(anchorEl);
   const classes = Styles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = JSON.parse(localStorage.getItem('profile'));
 
   const Likes = () => {
@@ -59,63 +61,67 @@ const Article = ({ article, setCurrentId }) => {
     setAnchorEl(null);
   }
 
+  const openPost = () => history.push(`/articles/${article._id}`);
+
   return (
     <Card className={classes.card} raised elevation={6}>
-      <CardMedia className={classes.media} image={article.bannerImage} title={article.title} />
-      <div className={classes.overlay}>
-        <Typography variant="h6" className={classes.author}>{article.name}</Typography>
-        <Typography variant="caption">{moment(article.createdAt).fromNow()}</Typography>
-      </div>
-      <div className={classes.overlay2}>
-        <IconButton onClick={openArticleMenu} size="small">
-          <MoreHorizIcon />
-        </IconButton>
-        <Menu
-          id="article-menu"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={closeArticleMenu}
-        >
-          <MenuItem
-            key="edit"
-            id="edit"
-            disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
-            className={classes.menuItems}
-            onClick={(e) => closeArticleMenu(e, article._id)}
-          >
-            <EditOutlinedIcon fontSize="small" />
-            Edit Article
-          </MenuItem>
-          <MenuItem
-            key="delete"
-            id="delete"
-            disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
-            className={classes.menuItems}
-            onClick={(e) => closeArticleMenu(e, article._id)}
-          >
-            <DeleteOutlineOutlinedIcon fontSize="small" />
-            Delete Article
-          </MenuItem>
-        </Menu>
-      </div>
-      <div className={classes.infoCard}>
-        <Avatar alt={article.author} src={article?.authorImage ?? loginImage} className={classes.avatar} />
-        <div className={classes.tagsContainer}>
-          {article.tags.map((tag) => (
-            <Chip className={classes.tag} color="default" size="small" label={tag} />
-          ))}
+      <ButtonBase className={classes.cardAction} onClick={openPost}>
+        <CardMedia className={classes.media} image={article.bannerImage} title={article.title} />
+        <div className={classes.overlay}>
+          <Typography variant="h6" className={classes.author}>{article.name}</Typography>
+          <Typography variant="caption">{moment(article.createdAt).fromNow()}</Typography>
         </div>
-      </div>
-      <Typography className={classes.title} variant="h6">{article.title}</Typography>
-      <CardContent>
-        <Typography
-          className={classes.description}
-          variant="body2"
-          color="textSecondary"
-        >
-          {article.description.substring(0, 256)}<Link> ... keep reading</Link>
-        </Typography>
-      </CardContent>
+        <div className={classes.overlay2}>
+          <IconButton onClick={openArticleMenu} size="small">
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="article-menu"
+            open={open}
+            anchorEl={anchorEl}
+            onClose={closeArticleMenu}
+          >
+            <MenuItem
+              key="edit"
+              id="edit"
+              disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
+              className={classes.menuItems}
+              onClick={(e) => closeArticleMenu(e, article._id)}
+            >
+              <EditOutlinedIcon fontSize="small" />
+              Edit Article
+            </MenuItem>
+            <MenuItem
+              key="delete"
+              id="delete"
+              disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
+              className={classes.menuItems}
+              onClick={(e) => closeArticleMenu(e, article._id)}
+            >
+              <DeleteOutlineOutlinedIcon fontSize="small" />
+              Delete Article
+            </MenuItem>
+          </Menu>
+        </div>
+        <div className={classes.infoCard}>
+          <Avatar alt={article.author} src={article?.authorImage ?? loginImage} className={classes.avatar} />
+          <div className={classes.tagsContainer}>
+            {article.tags.map((tag) => (
+              <Chip className={classes.tag} color="default" size="small" label={tag} />
+            ))}
+          </div>
+        </div>
+        <Typography className={classes.title} variant="h6">{article.title}</Typography>
+        <CardContent>
+          <Typography
+            className={classes.description}
+            variant="body2"
+            color="textSecondary"
+          >
+            {article.description.substring(0, 256)}
+          </Typography>
+        </CardContent>
+      </ButtonBase>
       <CardActions className={classes.cardActions}>
         <Typography variant="caption" color="textSecondary">
           <VisibilityIcon fontSize="small" />

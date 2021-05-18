@@ -6,11 +6,13 @@ import Article from './Article/Article';
 import Styles from './styles';
 
 const Articles = ({ setCurrentId }) => {
-  const articles = useSelector((state) => state.articles);
+  const { articles, isLoading } = useSelector((state) => state.articles);
   const classes = Styles();
 
+  if(!articles.length && !isLoading) return 'No articles'; // IMPROVE THIS
+
   return (
-    !articles.length ? <CircularProgress /> : (
+    isLoading ? <CircularProgress /> : (
       <Grid className={classes.container} container alignItems="stretch" spacing={3}>
         {articles.map((article) => (
           <Grid key={article._id} item xs={12} sm={12} md={6} lg={3}>

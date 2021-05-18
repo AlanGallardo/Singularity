@@ -9,7 +9,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const fetchArticles = () => API.get('/articles');
+export const fetchArticles = (page) => API.get(`/articles?page=${page}`);
+export const fetchArticle = (id) => API.get(`/articles/${id}`);
 export const fetchArticlesBySearch = (searchQuery) => API.get(`/articles/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
 export const createArticle = (newArticle) => API.post('/articles', newArticle);
 export const updateArticle = (id, updatedArticle) => API.patch(`/articles/${id}`, updatedArticle);

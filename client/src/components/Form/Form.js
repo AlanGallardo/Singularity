@@ -29,7 +29,6 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(currentId);
     if (currentId)
       dispatch(updateArticle(currentId, { ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
     else

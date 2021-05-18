@@ -1,11 +1,12 @@
 import express from 'express';
 
-import { getArticles, getArticlesBySearch, createArticle, updateArticle, deleteArticle, likeArticle } from '../controllers/articles.js';
+import { getArticles, getArticle, getArticlesBySearch, createArticle, updateArticle, deleteArticle, likeArticle } from '../controllers/articles.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.get('/', getArticles);
+router.get('/:id', getArticle);
 router.get('/search', getArticlesBySearch);
 router.post('/', auth, createArticle);
 router.patch('/:id', auth, updateArticle);

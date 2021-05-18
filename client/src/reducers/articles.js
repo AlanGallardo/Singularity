@@ -1,19 +1,30 @@
-import { FETCH_ALL, FETCH_BY_SEARCH, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import { FETCH_ALL, FETCH_ARTICLE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
 
-const articleReducer = (articles = [], action) => {
+const articleReducer = (state = { isLoading: true, articles: [] }, action) => {
   switch (action.type) {
+    case START_LOADING:
+      return { ...state, isLoading: true };
+    case END_LOADING:
+      return { ...state, isLoading: false };
     case FETCH_ALL:
-      return action.payload;
+      return { 
+        ...state,
+        articles: action.payload.data,
+        currentPage: action.payload.currentPage,
+        numberOfPages: action.payload.numberOfPages,
+      };
+    case FETCH_ARTICLE:
+      return { ...state, article: action.payload }
     case FETCH_BY_SEARCH:
-      return action.payload;
+      return { ...state, articles: action.payload };
     case CREATE:
-      return [...articles, action.payload];
+      return { ...state, articles: [...state.articles, action.payload] };
     case UPDATE:
-      return articles.map((article) => article._id === action.payload._id ? action.payload : article);
+      return { ...state, articles: state.articles.map((article) => (article._id === action.payload._id ? action.payload : article)) };
     case DELETE:
-      return articles.filter((article) => article._id !== action.payload);
+      return {...state, articles: state.articles.filter((article) => article._id !== action.payload) };
     default:
-      return articles;
+      return state;
   }
 };
 

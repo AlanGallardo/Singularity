@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom'; 
 import { Container, Grow, Grid, Paper } from '@material-ui/core';
 
-import { getArticles } from '../../actions/articles';
 import Pagination from '../Pagination/Pagination';
 import Articles from '../Articles/Articles';
 import Form from '../Form/Form';
@@ -17,13 +16,9 @@ const Home = () => {
   const [currentId, setCurrentId] = useState(null);
   const dispatch = useDispatch();
   const query = useQuery();
-  const history = useHistory();
   const page = query.get('page') || 1;
+  const searchQuery = query.get('searchQuery'); // IMPROVE THIS
   const classes = Styles();
-
-  useEffect(() => {
-    dispatch(getArticles());
-  }, [currentId, dispatch]);
 
   return (
     <Grow in>
@@ -34,8 +29,8 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper elevation={6}>
-              <Pagination />
+            <Paper elevation={6} className={classes.pagination}>
+              <Pagination page={page} />
             </Paper>
           </Grid>
         </Grid>
