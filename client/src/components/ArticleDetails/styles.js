@@ -4,7 +4,7 @@ export default makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(5),
     padding: '20px', 
-    borderRadius: '15px'
+    borderRadius: '15px',
   },
   media: {
     borderRadius: '20px',
@@ -19,10 +19,27 @@ export default makeStyles((theme) => ({
       flexDirection: 'column',
     },
   },
+  tagsContainer: {
+    margin: '10px',
+  },
+  tag: {
+    marginRight: '10px',
+    height: theme.spacing(2.5),
+    border: '1px solid gray',
+  },
   section: {
     borderRadius: '20px',
     margin: '10px',
     flex: 1,
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  avatar: {
+    width: theme.spacing(9),
+    height: theme.spacing(9),
+    border: '2px solid gray',
   },
   imageSection: {
     marginLeft: '20px',
@@ -30,7 +47,7 @@ export default makeStyles((theme) => ({
       marginLeft: 0,
     },
   },
-  recommendedPosts: {
+  recommendedArticles: {
     display: 'flex',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',

@@ -11,25 +11,22 @@ import {
   CardMedia,
   Chip,
   IconButton,
-  Menu,
-  MenuItem,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
+import parse from 'html-react-parser';
 
 import { deleteArticle, likeArticle } from '../../../actions/articles';
-import loginImage from '../../../resources/images/login.svg';
+import loginImage from '../../../images/login.svg';
 import Styles from './styles';
 
 const Article = ({ article, setCurrentId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const classes = Styles();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -48,10 +45,6 @@ const Article = ({ article, setCurrentId }) => {
     return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
   };
 
-  const openArticleMenu = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
-
   const closeArticleMenu = (e, id) => {
     if (e.currentTarget.id === 'edit')
       setCurrentId(id);
@@ -63,6 +56,15 @@ const Article = ({ article, setCurrentId }) => {
 
   const openPost = () => history.push(`/articles/${article._id}`);
 
+  const tooltipLikeTitle = () => {
+    if(user?.result?.googleId === article?.author || user?.result?._id === article?.author)
+      return 'You cannot like your own articles';
+    else if(user?.result?.googleId || user?.result?._id)
+      return 'Like Article';
+    else
+      return 'Sign In to like articles';
+  }
+
   return (
     <Card className={classes.card} raised elevation={6}>
       <ButtonBase className={classes.cardAction} onClick={openPost}>
@@ -70,38 +72,6 @@ const Article = ({ article, setCurrentId }) => {
         <div className={classes.overlay}>
           <Typography variant="h6" className={classes.author}>{article.name}</Typography>
           <Typography variant="caption">{moment(article.createdAt).fromNow()}</Typography>
-        </div>
-        <div className={classes.overlay2}>
-          <IconButton onClick={openArticleMenu} size="small">
-            <MoreHorizIcon />
-          </IconButton>
-          <Menu
-            id="article-menu"
-            open={open}
-            anchorEl={anchorEl}
-            onClose={closeArticleMenu}
-          >
-            <MenuItem
-              key="edit"
-              id="edit"
-              disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
-              className={classes.menuItems}
-              onClick={(e) => closeArticleMenu(e, article._id)}
-            >
-              <EditOutlinedIcon fontSize="small" />
-              Edit Article
-            </MenuItem>
-            <MenuItem
-              key="delete"
-              id="delete"
-              disabled={user?.result?.googleId !== article?.name || user?.result?._id !== article?.name}
-              className={classes.menuItems}
-              onClick={(e) => closeArticleMenu(e, article._id)}
-            >
-              <DeleteOutlineOutlinedIcon fontSize="small" />
-              Delete Article
-            </MenuItem>
-          </Menu>
         </div>
         <div className={classes.infoCard}>
           <Avatar alt={article.author} src={article?.authorImage ?? loginImage} className={classes.avatar} />
@@ -118,18 +88,44 @@ const Article = ({ article, setCurrentId }) => {
             variant="body2"
             color="textSecondary"
           >
-            {article.description.substring(0, 256)}
+            {parse(article.description.substring(0, 128))}...
           </Typography>
         </CardContent>
       </ButtonBase>
       <CardActions className={classes.cardActions}>
-        <Typography variant="caption" color="textSecondary">
-          <VisibilityIcon fontSize="small" />
-          &nbsp; 13K Visualizations
-        </Typography>
-        <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likeArticle(article._id))}>
-          <Likes />
-        </Button>
+        <Tooltip title={tooltipLikeTitle()} placement="right">
+          <span>
+            <Button
+              size="small"
+              color="primary"
+              disabled={!user?.result || (user?.result?.googleId === article?.author || user?.result?._id === article?.author)}
+              onClick={() => dispatch(likeArticle(article._id))}
+            >
+              <Likes />
+            </Button>
+          </span>
+        </Tooltip>
+        {(user?.result?.googleId === article?.author || user?.result?._id === article?.author) && (
+          <div className={classes.actions}>
+            <Tooltip title="Edit Article" placement="top">
+              <IconButton
+                color="primary"
+                disabled={!user?.result}
+                onClick={() => setCurrentId(article._id)}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete Article" placement="top">
+              <IconButton
+                color="primary"
+                disabled={!user?.result}
+                onClick={() => dispatch(deleteArticle(article._id))}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
       </CardActions>
     </Card>
   );

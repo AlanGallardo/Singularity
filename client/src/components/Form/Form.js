@@ -2,21 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import useStyles from './styles';
+import './editor.css';
 import { createArticle, updateArticle } from '../../actions/articles';
 
 const Form = ({ currentId, setCurrentId }) => {
-  const [ articleData, setArticleData ] = useState({
+  const [articleData, setArticleData] = useState({
     title: '',
     description: '',
     tags: '',
     bannerImage: '',
   });
-  const article = useSelector((state) => currentId ? state.articles.find((p) => p._id === currentId) : null);
+  const [text, setText] = useState('');
+  const article = useSelector((state) => currentId ? state.articles.articles.find((p) => p._id === currentId) : null);
   const dispatch = useDispatch();
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
+  const history = useHistory();
 
   useEffect(() => {
     if (article) setArticleData(article);
@@ -32,12 +38,12 @@ const Form = ({ currentId, setCurrentId }) => {
     if (currentId)
       dispatch(updateArticle(currentId, { ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
     else
-      dispatch(createArticle({ ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
+      dispatch(createArticle({ ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }, history));
 
     clear();
   };
 
-  if(!user?.result?.name) {
+  if (!user?.result?.name) {
     return (
       <Paper className={classes.paper}>
         <Typography variant="h6" align="center">
@@ -60,15 +66,6 @@ const Form = ({ currentId, setCurrentId }) => {
           onChange={(e) => setArticleData({ ...articleData, title: e.target.value })}
         />
         <TextField
-          name="description"
-          variant="outlined"
-          label="Description"
-          fullWidth
-          multiline
-          value={articleData.description}
-          onChange={(e) => setArticleData({ ...articleData, description: e.target.value })}
-        />
-        <TextField
           name="tags"
           variant="outlined"
           label="Tags"
@@ -76,6 +73,17 @@ const Form = ({ currentId, setCurrentId }) => {
           value={articleData.tags}
           onChange={(e) => setArticleData({ ...articleData, tags: e.target.value.split(',') })}
         />
+        <div className={classes.editor}>
+          <CKEditor
+            editor={ClassicEditor}
+            data={text}
+            onChange={(e, editor) => {
+              const data = editor.getData();
+              setText(data);
+              setArticleData({ ...articleData, description: text })
+            }}
+          />
+        </div>
         <div className={classes.fileInput}>
           <FileBase
             type="file"
@@ -83,8 +91,10 @@ const Form = ({ currentId, setCurrentId }) => {
             onDone={({ base64 }) => setArticleData({ ...articleData, bannerImage: base64 })}
           />
         </div>
-        <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
-        <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+        <div className={classes.actions}>
+          <Button variant="contained" color="primary" size="small" type="submit" fullWidth>Submit</Button>
+          <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+        </div>
       </form>
     </Paper>
   )

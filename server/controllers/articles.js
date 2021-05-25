@@ -7,14 +7,13 @@ const router = express.Router();
 
 export const getArticles = async (req, res) => {
   const { page } = req.query;
-
   try {
     const LIMIT = 8; // LIMIT OF ARTICLES PER PAGE
     const startIndex = (Number(page) - 1) * LIMIT;
-
+    
     const total = await ArticleModel.countDocuments({});
     const articles = await ArticleModel.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
-
+    
     res.status(200).json({ data: articles, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -32,11 +31,22 @@ export const getArticle = async (req, res) => {
   }
 }
 
-export const getArticlesBySearch = async (req, res) => {
-  const { searchQuery, tags } = req.query;
+export const getArticlesByKeyword = async (req, res) => {
+  const { keyword } = req.query;
   try {
-    const title = new RegExp(searchQuery, 'i');
-    const articles = await ArticleModel.find({ $or: [ { title }, { tags: { $in: tags.split(',') } }] });
+    const title = new RegExp(keyword, 'i');
+    const articles = await ArticleModel.find(title);
+    console.log(articles);
+    res.json({ data: articles });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
+export const getArticlesByTag = async (req, res) => {
+  const { tags } = req.query;
+  try {
+    const articles = await ArticleModel.find({ tags: tags.split(',') });
     res.json({ data: articles });
   } catch (error) {
     res.status(404).json({ message: error.message });

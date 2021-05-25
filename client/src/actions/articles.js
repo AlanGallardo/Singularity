@@ -1,4 +1,14 @@
-import { FETCH_ALL, FETCH_ARTICLE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import {
+  FETCH_ALL,
+  FETCH_ARTICLE,
+  FETCH_BY_KEYWORD,
+  FETCH_BY_TAG,
+  START_LOADING,
+  END_LOADING,
+  CREATE,
+  UPDATE,
+  DELETE
+} from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
 // Action Creators
@@ -28,12 +38,12 @@ export const getArticle = (id) => async (dispatch) => {
   }
 };
 
-export const getArticlesBySearch = (searchQuery) => async (dispatch) => {
+export const getArticlesByKeyword = (keyword) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
-    
-    const { data: { data } } = await api.fetchArticlesBySearch(searchQuery);
-    dispatch({ type: FETCH_BY_SEARCH, payload: data });
+    const { data: { data } } = await api.fetchArticlesByKeyword(keyword);
+    console.log(data);
+    dispatch({ type: FETCH_BY_KEYWORD, payload: data });
     
     dispatch({ type: END_LOADING });
   } catch (error) {
@@ -41,13 +51,26 @@ export const getArticlesBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createArticle = (article) => async (dispatch) => {
+export const getArticlesByTag = (tags) => async (dispatch) => {
   try {
     dispatch({ type: START_LOADING });
+    const { data: { data } } = await api.fetchArticlesByTag(tags);
+    dispatch({ type: FETCH_BY_TAG, payload: data });
+    
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+export const createArticle = (article, history) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
     const { data } = await api.createArticle(article);
-    dispatch({ type: CREATE, payload: data });
 
+    history.push(`/articles/${data._id}`);
+    
+    dispatch({ type: CREATE, payload: data });
     dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);

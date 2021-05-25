@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
   root: {
@@ -24,4 +25,21 @@ export default makeStyles((theme) => ({
       fontSize: '14px'
     },
   },
+  modal: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    padding: theme.spacing(2, 4, 3),
+  },
+  closeButton: {
+    transition: '.5s',
+    cursor: 'pointer',
+    '&:hover': {
+      color: 'red',
+    }
+  }
 }));

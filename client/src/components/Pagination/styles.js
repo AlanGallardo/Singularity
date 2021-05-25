@@ -4,4 +4,11 @@ export default makeStyles(() => ({
   ul: {
     justifyContent: 'space-around',
   },
+  paginationItem: {
+    fontSize: '18px',
+    backgroundColor: 'red',
+    '&:hover': {
+      backgroundColor: 'cyan',
+    }
+  }
 }));

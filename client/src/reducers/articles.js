@@ -1,4 +1,14 @@
-import { FETCH_ALL, FETCH_ARTICLE, FETCH_BY_SEARCH, START_LOADING, END_LOADING, CREATE, UPDATE, DELETE } from '../constants/actionTypes';
+import {
+  FETCH_ALL,
+  FETCH_ARTICLE,
+  FETCH_BY_KEYWORD,
+  FETCH_BY_TAG,
+  START_LOADING,
+  END_LOADING,
+  CREATE,
+  UPDATE,
+  DELETE
+} from '../constants/actionTypes';
 
 const articleReducer = (state = { isLoading: true, articles: [] }, action) => {
   switch (action.type) {
@@ -15,7 +25,8 @@ const articleReducer = (state = { isLoading: true, articles: [] }, action) => {
       };
     case FETCH_ARTICLE:
       return { ...state, article: action.payload }
-    case FETCH_BY_SEARCH:
+    case FETCH_BY_KEYWORD:
+    case FETCH_BY_TAG:
       return { ...state, articles: action.payload };
     case CREATE:
       return { ...state, articles: [...state.articles, action.payload] };

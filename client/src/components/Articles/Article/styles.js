@@ -82,4 +82,8 @@ export default makeStyles((theme) => ({
     display: 'block',
     textAlign: 'initial',
   },
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
 }));

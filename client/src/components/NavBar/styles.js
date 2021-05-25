@@ -58,8 +58,9 @@ export default makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
   },
   options: {
-    color: 'white',
-    marginRight: theme.spacing(5),
+    color: '#c5c5c5',
+    margin: theme.spacing(1, 5, 0, 0),
+    backgroundColor: 'inherit',
   },
   sectionDesktop: {
     color: 'white',
