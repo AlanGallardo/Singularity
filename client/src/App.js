@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
+import Profile from './components/Profile/Profile';
 import ArticleDetails from './components/ArticleDetails/ArticleDetails';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/articles/search" exact component={Home} />
           <Route path="/articles/:id" component={ArticleDetails} />
           <Route path="/auth" exact component={() => (!user ? <Auth /> : <Redirect to="/articles" />)} />
+          <Route path="/profile/:user" exact component={Profile} />
         </Switch>
       </Container>
     </BrowserRouter>

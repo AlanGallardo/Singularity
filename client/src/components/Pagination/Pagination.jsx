@@ -14,7 +14,7 @@ const Paginate = ({ page }) => {
 
   useEffect(() => {
     if(page) dispatch(getArticles(page));
-  }, [page]);
+  }, [page, dispatch]);
 
   return (
     <Pagination

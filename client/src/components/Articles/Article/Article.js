@@ -22,7 +22,6 @@ import moment from 'moment';
 import parse from 'html-react-parser';
 
 import { deleteArticle, likeArticle } from '../../../actions/articles';
-import loginImage from '../../../images/login.svg';
 import Styles from './styles';
 
 const Article = ({ article, setCurrentId }) => {
@@ -74,14 +73,16 @@ const Article = ({ article, setCurrentId }) => {
           <Typography variant="caption">{moment(article.createdAt).fromNow()}</Typography>
         </div>
         <div className={classes.infoCard}>
-          <Avatar alt={article.author} src={article?.authorImage ?? loginImage} className={classes.avatar} />
+          <Avatar alt={article.author} src={article?.authorImage} className={classes.avatar}>
+            <Typography variant="h4">{article.name.charAt(0)}</Typography>
+          </Avatar>
           <div className={classes.tagsContainer}>
             {article.tags.map((tag) => (
               <Chip className={classes.tag} color="default" size="small" label={tag} />
             ))}
           </div>
         </div>
-        <Typography className={classes.title} variant="h6">{article.title}</Typography>
+        <Typography className={classes.title} variant="body1">{article.title}</Typography>
         <CardContent>
           <Typography
             className={classes.description}

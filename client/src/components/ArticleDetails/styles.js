@@ -32,6 +32,10 @@ export default makeStyles((theme) => ({
     margin: '10px',
     flex: 1,
   },
+  rightSection: {
+    display: 'flex',
+    flexFlow: 'column',
+  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -41,6 +45,11 @@ export default makeStyles((theme) => ({
     height: theme.spacing(9),
     border: '2px solid gray',
   },
+  smallAvatar: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
+    marginRight: theme.spacing(2),
+  },
   imageSection: {
     marginLeft: '20px',
     [theme.breakpoints.down('sm')]: {
@@ -49,9 +58,32 @@ export default makeStyles((theme) => ({
   },
   recommendedArticles: {
     display: 'flex',
+    flexFlow: 'column',
+    alignItems: 'flex-end',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
+  },
+  recommendedArticle: {
+    margin: '10px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'stretch',
+    width: theme.spacing(100),
+  },
+  recommendedInfo: {
+    display: 'flex',
+    flexFlow: 'column',
+    margin: '10px',
+  },
+  recommendedTitle: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  recommendedLikes: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginRight: '10px',
   },
   loadingPaper: {
     display: 'flex',

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Backdrop,
   Collapse,
@@ -27,8 +28,9 @@ const NavBar = () => {
   const [open, setOpen] = useState(false);
   const [openForm, setOpenForm] = useState(false);
   const [currentId, setCurrentId] = useState(null);
-  const classes = Styles();
   const user = JSON.parse(localStorage.getItem('profile'));
+  const history = useHistory();
+  const classes = Styles();
 
   const libraryChilds = [
     {
@@ -55,6 +57,8 @@ const NavBar = () => {
     setOpenForm(false)
   };
 
+  const openProfile = () => history.push(`/profile/${(user?.result?.name).replace(/ +/g, "")}`);
+
   return (
     <List
       component="nav"
@@ -68,7 +72,7 @@ const NavBar = () => {
         </ListSubheader>
       }
     >
-      <ListItem button>
+      <ListItem button onClick={openProfile}>
         <ListItemIcon>
           <AccountBoxOutlinedIcon />
         </ListItemIcon>

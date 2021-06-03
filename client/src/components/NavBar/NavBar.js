@@ -88,7 +88,7 @@ const NavBar = () => {
 
           <IconButton edge="end" color="inherit" onClick={openLoginMenu}>
             {user ? (
-              <Avatar className="O" alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
+              <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
             ) : (
               <img src={loginImage} alt="img" height="30" />
             )}
