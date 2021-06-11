@@ -5,35 +5,42 @@ import {
   Avatar,
   Button,
   ButtonBase,
+  Backdrop,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   Chip,
+  Fade,
   IconButton,
+  Modal,
   Tooltip,
   Typography,
+  Paper,
 } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
+import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import moment from 'moment';
 import parse from 'html-react-parser';
 
+import Form from '../../Form/Form';
 import { deleteArticle, likeArticle } from '../../../actions/articles';
 import Styles from './styles';
 
 const Article = ({ article, setCurrentId }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [openForm, setOpenForm] = useState(false);
+  //const [currentId, setCurrentId] = useState(null);
   const classes = Styles();
   const dispatch = useDispatch();
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem('profile'));
 
   const Likes = () => {
-    if (article.likes.length > 0) {
-      return article.likes.find((like) => like === (user?.result?.googleId || user?.result?._id))
+    if (article.likes?.length > 0) {
+      return article.likes?.find((like) => like === (user?.result?.googleId || user?.result?._id))
         ? (
           <><ThumbUpAltIcon fontSize="small" />&nbsp;{article.likes.length > 2 ? `You and ${article.likes.length - 1} others` : `${article.likes.length} like${article.likes.length > 1 ? 's' : ''}`}</>
         ) : (
@@ -44,21 +51,17 @@ const Article = ({ article, setCurrentId }) => {
     return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
   };
 
-  const closeArticleMenu = (e, id) => {
-    if (e.currentTarget.id === 'edit')
-      setCurrentId(id);
-    if (e.currentTarget.id === 'delete')
-      dispatch(deleteArticle(id));
-
-    setAnchorEl(null);
-  }
+  const handleForm = () => {
+    setCurrentId(article._id);
+    setOpenForm(!openForm);
+  };
 
   const openPost = () => history.push(`/articles/${article._id}`);
 
   const tooltipLikeTitle = () => {
-    if(user?.result?.googleId === article?.author || user?.result?._id === article?.author)
+    if (user?.result?.googleId === article?.author || user?.result?._id === article?.author)
       return 'You cannot like your own articles';
-    else if(user?.result?.googleId || user?.result?._id)
+    else if (user?.result?.googleId || user?.result?._id)
       return 'Like Article';
     else
       return 'Sign In to like articles';
@@ -74,7 +77,7 @@ const Article = ({ article, setCurrentId }) => {
         </div>
         <div className={classes.infoCard}>
           <Avatar alt={article.author} src={article?.authorImage} className={classes.avatar}>
-            <Typography variant="h4">{article.name.charAt(0)}</Typography>
+            <Typography variant="h4">{article.name?.charAt(0)}</Typography>
           </Avatar>
           <div className={classes.tagsContainer}>
             {article.tags.map((tag) => (
@@ -89,7 +92,7 @@ const Article = ({ article, setCurrentId }) => {
             variant="body2"
             color="textSecondary"
           >
-            {parse(article.description.substring(0, 128))}...
+            {parse(article.description.substring(0, article.description.indexOf('.') + 1))}...
           </Typography>
         </CardContent>
       </ButtonBase>
@@ -112,7 +115,7 @@ const Article = ({ article, setCurrentId }) => {
               <IconButton
                 color="primary"
                 disabled={!user?.result}
-                onClick={() => setCurrentId(article._id)}>
+                onClick={handleForm}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
@@ -128,6 +131,25 @@ const Article = ({ article, setCurrentId }) => {
           </div>
         )}
       </CardActions>
+      <Modal
+        open={openForm}
+        closeAfterTransition
+        className={classes.modal}
+        BackdropComponent={Backdrop}
+        BackdropProps={{ timeout: 500, }}
+      >
+        <Fade in={openForm}>
+          <Paper className={classes.paper}>
+            <CloseIcon className={classes.closeButton} onClick={handleForm} />
+            <Form
+              currentId={article._id}
+              titleProp={article.title}
+              descriptionProp={article.description}
+              tagsProp={article.tags}
+            />
+          </Paper>
+        </Fade>
+      </Modal>
     </Card>
   );
 }

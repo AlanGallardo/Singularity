@@ -1,29 +1,14 @@
-import { makeStyles } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    width: 250,
-    color: 'white',
+    padding: theme.spacing(3),
+    margin: theme.spacing(1),
   },
-  subheader: {
-    color: 'white',
+  header: {
     display: 'flex',
-    justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  closeDrawer: {
-    width: 'auto',
-    borderRadius: '50%',
-    '&:hover': {
-      backgroundColor: 'inherit'
-    },
-  },
-  child: {
-    paddingLeft: theme.spacing(11),
-    '& span': {
-      fontSize: '14px'
-    },
+    justifyContent: 'space-between',
   },
   modal: {
     display: 'flex',

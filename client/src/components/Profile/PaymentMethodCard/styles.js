@@ -24,7 +24,6 @@ export default makeStyles((theme) => ({
   },
   headerCard: {
     display: 'flex',
-    justifyContent: 'space-between',
   },
   bottomCard: {
     display: 'flex',
@@ -33,12 +32,24 @@ export default makeStyles((theme) => ({
   },
   infoCard: {
     display: 'flex',
-    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
   backCard: {
     border: '1px solid',
     borderRadius: theme.spacing(1),
     padding: theme.spacing(4),
+  },
+  emptyBackgroundCard: {
+    background: 'linear-gradient(220deg, #8693ab 0%, #bdd4e7 100%)',
+  },
+  filledBackgroundCard: {
+    background: 'linear-gradient(220deg, rgba(91, 160, 255, 1) 0%, rgba(137, 247, 254, 1) 100%)',
+  },
+  deleteCard: {
+    position: 'relative',
+    left: '375px',
+    top: '-25px',
+    margin: '-10px',
   },
   actions: {
     display: 'flex',

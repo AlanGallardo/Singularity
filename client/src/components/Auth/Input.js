@@ -9,7 +9,9 @@ const Input = ({
   handleChange,
   label,
   autoFocus,
+  value,
   type,
+  disabled,
   handleShowPassword,
 }) => {
   return (
@@ -23,6 +25,8 @@ const Input = ({
         label={label}
         autoFocus={autoFocus}
         type={type}
+        value={value}
+        disabled={disabled}
         InputProps={name === 'password' ? {
           endAdornment: (
             <InputAdornment position="end">

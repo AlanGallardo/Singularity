@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 
 import articleRoutes from './routes/articles.js';
 import userRoutes from './routes/users.js';
+import creditCardRoutes from './routes/creditCard.js';
+import questionRoutes from './routes/questions.js';
 
 const app = express();
 dotenv.config();
@@ -15,6 +17,8 @@ app.use(cors());
 
 app.use('/articles', articleRoutes);
 app.use('/user', userRoutes);
+app.use('/creditCard', creditCardRoutes);
+app.use('/forum', questionRoutes);
 
 const PORT = process.env.PORT || 5000;
 

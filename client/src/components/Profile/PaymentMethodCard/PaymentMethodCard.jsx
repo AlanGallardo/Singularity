@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -8,16 +10,51 @@ import {
   Divider,
   TextField,
   Typography,
+  IconButton,
 } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Delete';
 
+import { getCreditCard, createCreditCard, deleteCreditCard } from '../../../actions/creditCard';
+import cvv from '../../../images/cvv.svg';
+import master from '../../../images/mastercard.svg';
 import styles from './styles';
 
 const PaymentMethodCard = () => {
+  const [cardData, setCardData] = useState({
+    number: '',
+    name: '',
+    expiry: '',
+    cvv: '',
+  });
   const [open, setOpen] = useState(true);
-  const user = JSON.parse(localStorage.getItem('profile'));
   const classes = styles();
+  const sessionUser = JSON.parse(localStorage.getItem('profile'));
+  const dispatch = useDispatch();
+  const { user } = useParams();
+  const creditCard = useSelector(
+    (state) => state.creditCard.creditCard.find((c) => c.user === user)
+  );
+
+  console.log(creditCard);
+
+  useEffect(() => {
+    if (creditCard) setCardData(creditCard);
+  }, [creditCard]);
+
+  useEffect(() => {
+    dispatch(getCreditCard(user));
+  }, [user, dispatch]);
+
+  const handleSubmit = async (e) => {
+    dispatch(createCreditCard({ ...cardData, user: sessionUser?.result?.name.replace(/\s+/g, '') }));
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteCreditCard(creditCard._id));
+    setCardData({ number: '', name: '', expiry: '', cvv: '' });
+  };
 
   const toggleCard = () => setOpen(!open);
 
@@ -30,66 +67,88 @@ const PaymentMethodCard = () => {
       <Divider />
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Card className={classes.card}>
-          <CardContent className={classes.payment}>
-            <div className={classes.frontCard}>
-              <div className={classes.headerCard}>
-                <div>Credit</div>
-                LOGO
-              </div>
-              <div className={classes.bottomCard}>
-                <div className={classes.numberCard}>
-                  <TextField
-                    name="title"
-                    variant="standard"
-                    label="Number"
-                    placeholder="0000-0000-0000-0000"
-                    fullWidth
-                  />
+          <form autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <CardContent className={classes.payment}>
+              <div className={`${classes.frontCard} ${creditCard ? classes.filledBackgroundCard : classes.emptyBackgroundCard}`}>
+                <div className={classes.headerCard}>
+                  <img src={master} alt="img" height="40" />
                 </div>
-                <div className={classes.infoCard}>
-                  <TextField
-                    name="title"
-                    variant="standard"
-                    label="Full name"
-                    fullWidth
-                  />
-                  <TextField
-                    name="title"
-                    variant="standard"
-                    label="Expiry Date"
-                    placeholder="MM/YY"
-                    style={{ marginLeft: '10px' }}
-                  />
+                <div className={classes.bottomCard}>
+                  <div className={classes.numberCard}>
+                    <TextField
+                      name="number"
+                      variant="standard"
+                      label="Number"
+                      placeholder="0000-0000-0000-0000"
+                      required
+                      fullWidth
+                      disabled={creditCard}
+                      value={cardData?.number}
+                      onChange={(e) => setCardData({ ...cardData, number: e.target.value })}
+                    />
+                  </div>
+                  <div className={classes.infoCard}>
+                    <TextField
+                      name="name"
+                      variant="standard"
+                      label="Full name"
+                      required
+                      fullWidth
+                      placeholder={sessionUser.result.name}
+                      disabled={creditCard}
+                      value={cardData?.name}
+                      onChange={(e) => setCardData({ ...cardData, name: e.target.value })}
+                    />
+                    <TextField
+                      name="expiry"
+                      variant="standard"
+                      label="Expiry Date"
+                      placeholder="MM/YY"
+                      style={{ marginLeft: '10px' }}
+                      required
+                      disabled={creditCard}
+                      value={cardData?.expiry}
+                      onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={classes.backCard}>
-              <div className={classes.headerCard}>
-                <div>Credit</div>
-                LOGO
+              <div className={`${classes.backCard} ${creditCard ? classes.filledBackgroundCard : classes.emptyBackgroundCard}`}>
+                <div className={classes.headerCard}>
+                  <img src={master} alt="img" height="40" />
+                </div>
+                <div className={classes.bottomCard}>
+                  <div style={{ display: 'flex' }}>
+                    <TextField
+                      name="cvv"
+                      variant="standard"
+                      label="cvv"
+                      required
+                      style={{ width: '300px' }}
+                      disabled={creditCard}
+                      value={cardData?.cvv}
+                      onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
+                    />
+                    <img src={cvv} alt="img" height="30" style={{ margin: '20px' }} />
+                  </div>
+                </div>
               </div>
-              <div className={classes.bottomCard}>
-                <TextField
-                  name="title"
-                  variant="standard"
-                  label="Number"
-                />
-                <TextField
-                  name="title"
-                  variant="standard"
-                  label="Full name"
-                />
+              <div className={classes.deleteCard}>
+                {creditCard && (
+                  <>
+                    <IconButton color="primary" onClick={handleDelete}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
+                )}
               </div>
-            </div>
-          </CardContent>
-          <CardActions className={classes.actions}>
-            <Button color="primary" variant="contained">
-              Save
-            </Button>
-            <Button color="secondary" variant="contained">
-              Cancel
-            </Button>
-          </CardActions>
+            </CardContent>
+            {!creditCard && (
+              <CardActions className={classes.actions}>
+                <Button color="primary" variant="contained" type="submit">Save</Button>
+              </CardActions>
+            )}
+          </form>
         </Card>
       </Collapse>
     </>

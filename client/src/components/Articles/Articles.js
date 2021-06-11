@@ -1,15 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { Grid, CircularProgress } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 
+import { getArticlesBySearch } from '../../actions/articles';
 import Article from './Article/Article';
 import Styles from './styles';
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+};
+
 const Articles = ({ setCurrentId }) => {
   const { articles, isLoading } = useSelector((state) => state.articles);
+  const dispatch = useDispatch();
+  const query = useQuery();
+  const searchQuery = query.get('searchQuery');
   const classes = Styles();
 
-  if(!articles.length && !isLoading) return 'No articles'; // IMPROVE THIS
+  useEffect(() => {
+    if(searchQuery) dispatch(getArticlesBySearch(searchQuery));
+  }, [dispatch, searchQuery]);
+
+  if(!articles) return 'No articles';
 
   return (
     isLoading ? <CircularProgress /> : (

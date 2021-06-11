@@ -7,23 +7,19 @@ export default makeStyles((theme) => ({
     },
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(5),
   },
   form: {
     [theme.breakpoints.up('md')]: {
-      height: '70ch',
+      height: '40ch',
     },
-  },
-  fileInput: {
-    width: '97%',
-    marginLeft: '10px',
-    padding: '10px',
   },
   actions: {
     display: 'flex',
+    justifyContent: 'flex-end',
     padding: theme.spacing(2),
   },
   editor: {
-    marginLeft: theme.spacing(1.5),
+    marginLeft: theme.spacing(1),
   },
 }));

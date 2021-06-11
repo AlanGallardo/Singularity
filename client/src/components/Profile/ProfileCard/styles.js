@@ -48,4 +48,20 @@ export default makeStyles((theme) => ({
     flexFlow: 'column',
     justifyContent: 'flex-start',
   },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(5),
+  },
+  modal: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dialogText: {
+    margin: theme.spacing(2),
+  },
+  dialogButtons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  }
 }));

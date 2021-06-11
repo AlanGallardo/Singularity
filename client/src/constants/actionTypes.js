@@ -3,11 +3,21 @@ export const UPDATE = 'UPDATE';
 export const DELETE = 'DELETE';
 export const FETCH_ALL = 'FETCH_ALL';
 export const FETCH_ARTICLE = 'FETCH_ARTICLE';
-export const FETCH_BY_KEYWORD = 'FETCH_BY_KEYWORD';
-export const FETCH_BY_TAG = 'FETCH_BY_TAG';
+export const FETCH_BY_SEARCH = 'FETCH_BY_SEARCH';
 
 export const START_LOADING = 'START_LOADING';
 export const END_LOADING = 'END_LOADING';
 
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+export const UPDATE_USER = 'UPDATE_USER';
+
+export const FETCH_CREDITCARD = 'FETCH_CREDITCARD';
+export const CREATE_CREDITCARD = 'CREATE_CREDITCARD';
+export const DELETE_CREDITCARD = 'DELETE_CREDITCARD';
+
+export const FETCH_ALL_QUESTIONS = 'FETCH_ALL_QUESTIONS';
+export const FETCH_QUESTION = 'FETCH_QUESTION';
+export const CREATE_QUESTION = 'CREATE_QUESTION';
+export const UPDATE_QUESTION = 'UPDATE_QUESTION';
+export const DELETE_QUESTION = 'DELETE_QUESTION';

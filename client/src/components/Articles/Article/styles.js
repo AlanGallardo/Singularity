@@ -86,4 +86,21 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
+  modal: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    padding: theme.spacing(2, 4, 3),
+  },
+  closeButton: {
+    transition: '.5s',
+    cursor: 'pointer',
+    '&:hover': {
+      color: 'red',
+    }
+  },
 }));

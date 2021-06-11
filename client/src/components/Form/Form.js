@@ -10,14 +10,19 @@ import useStyles from './styles';
 import './editor.css';
 import { createArticle, updateArticle } from '../../actions/articles';
 
-const Form = ({ currentId, setCurrentId }) => {
+const Form = ({
+  titleProp,
+  descriptionProp,
+  tagsProp,
+  currentId,
+}) => {
   const [articleData, setArticleData] = useState({
-    title: '',
-    description: '',
-    tags: '',
+    title: titleProp ?? '',
+    description: descriptionProp ?? '',
+    tags: tagsProp ?? '',
     bannerImage: '',
   });
-  const [text, setText] = useState('');
+  const [text, setText] = useState(descriptionProp ?? '');
   const article = useSelector((state) => currentId ? state.articles.articles.find((p) => p._id === currentId) : null);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -29,16 +34,17 @@ const Form = ({ currentId, setCurrentId }) => {
   }, [article])
 
   const clear = () => {
-    setCurrentId(null);
-    setArticleData({ title: '', description: '', tags: '', bannerImage: '' });
+    setArticleData({ title: '', tags: '', bannerImage: '' });
+    setText('');
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     if (currentId)
       dispatch(updateArticle(currentId, { ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
-    else
+    else {
+      e.preventDefault();
       dispatch(createArticle({ ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }, history));
+    }
 
     clear();
   };

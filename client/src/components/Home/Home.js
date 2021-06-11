@@ -9,7 +9,7 @@ import Styles from './styles';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
-}
+};
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(null);
@@ -21,19 +21,10 @@ const Home = () => {
     <Grow in>
       <Container maxWidth="xl">
         <Grid className={classes.gridContainer} container justify="space-between" alignItems="stretch" spacing={3}>
-          <Grid item xs={12} sm={6} md={9}>
+          <Grid item xs={12} sm={6} md={9} lg={12}>
             <Articles setCurrentId={setCurrentId} />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <AppBar className={classes.appBarSearch} position="static" color="inherit">
-              <TextField name="search" variant="outlined" label="Search Memories" fullWidth />
-              <ChipInput
-                style={{ margin: '10px 0' }}
-                label="Search Tags"
-                variant="outlined"
-              />
-              <Button className={classes.searchButton} variant="contained" color="primary">Search</Button>
-            </AppBar>
+          <Grid item xs={12} sm={6} md={3} lg={12}>
             <Paper className={classes.pagination}>
               <Pagination page={page} />
             </Paper>

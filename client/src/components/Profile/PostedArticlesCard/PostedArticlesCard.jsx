@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Card,
   CardContent,
@@ -12,14 +12,20 @@ import {
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
+import { getArticles } from '../../../actions/articles';
 import Article from '../../Articles/Article/Article';
 import styles from './styles';
 
 const PostedArticlesCard = () => {
   const [open, setOpen] = useState(true);
   const { articles, isLoading } = useSelector((state) => state.articles);
+  const dispatch = useDispatch();
   const classes = styles();
   const user = JSON.parse(localStorage.getItem('profile'));
+
+  useEffect(() => {
+    dispatch(getArticles(1));
+  }, [dispatch]);
 
   const authorArticles = articles.filter((article) => user?.result?.name === article.name);
 

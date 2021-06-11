@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
 
-const articleSchema = mongoose.Schema({
+const questionSchema = mongoose.Schema({
   title: String,
   description: String,
   name: String,
-  author: String,
   authorImage: String,
-  bannerImage: String,
-  tags: [String],
-  likes: {
+  solved: {
+    type: Boolean,
+    default: false,
+  },
+  answers: {
     type: [String],
     default: [],
   },
@@ -18,4 +19,4 @@ const articleSchema = mongoose.Schema({
   }
 });
 
-export default mongoose.model('ArticleModel', articleSchema);
+export default mongoose.model('QuestionModel', questionSchema);
