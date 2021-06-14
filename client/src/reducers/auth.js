@@ -10,7 +10,7 @@ const authReducer = (state = { authData: null }, action) => {
       return { ...state, authData: null };
     case UPDATE_USER:
       const user = JSON.parse(localStorage.getItem('profile'));
-      return { ...state, authData: user._id === action.payload._id ? action.payload : user };
+      return { ...state, authData: user.result._id === action.payload._id ? action.payload : user };
     default:
       return state;
   }

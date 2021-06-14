@@ -23,7 +23,6 @@ const ForumForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({...questionData});
     dispatch(createQuestion({
       ...questionData,
       name: user?.result?._id || user?.result?.googleId,

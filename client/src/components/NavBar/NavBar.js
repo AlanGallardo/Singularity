@@ -11,7 +11,6 @@ import {
   MenuItem,
   Toolbar,
   Backdrop,
-  Collapse,
   Fade,
   List,
   ListItem,
@@ -36,7 +35,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Form from '../Form/Form';
 import Search from '../Search/Search';
 import Styles from './styles';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo.svg';
 import loginImage from '../../images/login.svg';
 
 const NavBar = () => {
@@ -132,7 +131,7 @@ const NavBar = () => {
               <ListItemText primary="Profile" />
             </ListItem>
 
-            <ListItem button disabled={!(user?.result?.googleId || user?.result?._id)} onClick={handleForm}>
+            <ListItem button disabled={!(user?.result?.googleId || user?.result?.isPremium)} onClick={handleForm}>
               <ListItemIcon>
                 <PostAddOutlinedIcon />
               </ListItemIcon>

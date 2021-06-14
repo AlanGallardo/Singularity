@@ -37,8 +37,6 @@ const PaymentMethodCard = () => {
     (state) => state.creditCard.creditCard.find((c) => c.user === user)
   );
 
-  console.log(creditCard);
-
   useEffect(() => {
     if (creditCard) setCardData(creditCard);
   }, [creditCard]);

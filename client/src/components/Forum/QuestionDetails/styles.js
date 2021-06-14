@@ -73,4 +73,10 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
   },
+  answerCreatedAt: {
+    borderLeft: '1px solid',
+    marginLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    color: 'gray',
+  },
 }));

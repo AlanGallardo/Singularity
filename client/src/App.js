@@ -17,7 +17,7 @@ const App = () => {
       <Container maxWidth="xl">
         <NavBar />
         <Switch>
-          <Route path="/" exact component={() => <Redirect to="/articles" />} /* <- You don't want to do this */ />
+          <Route path="/" exact component={() => <Redirect to="/articles" />} />
           <Route path="/articles" exact component={Home} />
           <Route path="/articles/search" exact component={Home} />
           <Route path="/articles/:id" component={ArticleDetails} />

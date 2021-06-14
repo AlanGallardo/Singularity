@@ -31,4 +31,8 @@ export const createQuestion = (question) => API.post('/forum', question);
 export const updateQuestion = (id, updatedQuestion) => API.patch(`/forum/${id}`, updatedQuestion);
 export const deleteQuestion = (id) => API.delete(`/forum/${id}`);
 export const answerQuestion = (id, answer) => API.patch(`/forum/${id}/answerQuestion`, answer);
- 
+
+export const fetchAnswer = (id) => API.get(`/answers/${id}`);
+export const createAnswer = (answer) => API.post('/answers', answer);
+export const updateAnswer = (id, updatedAnswer) => API.patch(`/answers/${id}`, updatedAnswer);
+export const deleteAnswer = (id) => API.delete(`/answers/${id}`);

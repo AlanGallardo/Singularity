@@ -65,7 +65,12 @@ const Article = ({ article, setCurrentId }) => {
       return 'Like Article';
     else
       return 'Sign In to like articles';
-  }
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteArticle(article._id));
+    history.push('/');
+  };
 
   return (
     <Card className={classes.card} raised elevation={6}>
@@ -123,7 +128,7 @@ const Article = ({ article, setCurrentId }) => {
               <IconButton
                 color="primary"
                 disabled={!user?.result}
-                onClick={() => dispatch(deleteArticle(article._id))}
+                onClick={handleDelete}
               >
                 <DeleteIcon />
               </IconButton>

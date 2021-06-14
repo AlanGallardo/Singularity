@@ -7,6 +7,7 @@ import articleRoutes from './routes/articles.js';
 import userRoutes from './routes/users.js';
 import creditCardRoutes from './routes/creditCard.js';
 import questionRoutes from './routes/questions.js';
+import answerRoutes from './routes/answers.js';
 
 const app = express();
 dotenv.config();
@@ -19,6 +20,11 @@ app.use('/articles', articleRoutes);
 app.use('/user', userRoutes);
 app.use('/creditCard', creditCardRoutes);
 app.use('/forum', questionRoutes);
+app.use('/answers', answerRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Running...');
+});
 
 const PORT = process.env.PORT || 5000;
 

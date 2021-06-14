@@ -51,12 +51,12 @@ export const signup = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { name, email, isPremium } = req.body;
+  const { name, email, isPremium, imageUrl } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send(`No user with id: ${id}`);
 
-  const updatedUser = { name, email, isPremium, _id: id };
+  const updatedUser = { name, email, isPremium, imageUrl, _id: id };
   
   await userSchema.findByIdAndUpdate(id, updatedUser, { new: true });
 

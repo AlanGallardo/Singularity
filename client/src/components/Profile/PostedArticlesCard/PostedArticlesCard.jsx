@@ -42,6 +42,7 @@ const PostedArticlesCard = () => {
         <Card className={classes.card}>
           <CardContent className={classes.posted}>
             <Grid container alignItems="stretch" spacing={3}>
+              {authorArticles.length === 0 && 'No articles'}
               {isLoading ? <CircularProgress /> : (
                 authorArticles.map((a) => (
                   <Grid key={a._id} item xs={12} sm={12} md={3}>

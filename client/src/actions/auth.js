@@ -1,4 +1,4 @@
-import { AUTH, UPDATE_USER } from '../constants/actionTypes';
+import { AUTH, UPDATE_USER, FETCH_ALL_USERS } from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
 export const signin = (formData, history) => async (dispatch) => {

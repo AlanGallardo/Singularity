@@ -26,12 +26,12 @@ export default makeStyles((theme) => ({
   },
   avatarContainer: {
     display: 'flex',
-    alignItems: 'flex-start',
+    flexFlow: 'column',
   },
   avatar: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    marginRight: theme.spacing(5),
+    margin: theme.spacing(0, 5, 2, 0),
   },
   textFields: {
     display: 'flex',
