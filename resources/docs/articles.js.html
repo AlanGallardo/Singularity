@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: articles.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: articles.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import express from 'express';
+import mongoose from 'mongoose';
+
+import ArticleModel from '../models/articleSchema.js';
+
+const router = express.Router();
+
+/**
+ * Retrieves all the articles
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const getArticles = async (req, res) => {
+  // Recovering the page from the URL query
+  const { page } = req.query;
+
+  try {
+    // Setting the limits for the pagination
+    const LIMIT = 8;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    
+    // Find the first 8 articles.
+    const total = await ArticleModel.countDocuments({});
+    const articles = await ArticleModel.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+    
+    res.status(200).json({ data: articles, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT) });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+/**
+ * Retrieve an article by it's ID
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const getArticle = async (req, res) => {
+  // Recovering the id from the parameter
+  const { id } = req.params;
+
+  try {
+    // Find the article by id
+    const article = await ArticleModel.findById(id);
+    res.status(200).json(article);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+/**
+ * Retrieve articles by keyword or by tag
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const getArticlesBySearch = async (req, res) => {
+  // Recovering the keyword from the URL query
+  const { searchQuery } = req.query;
+
+  try {
+    // Finding by keyword or by tag
+    const title = new RegExp(searchQuery, 'i');
+    const articles = await ArticleModel.find({ $or: [ { title }, { tags: title } ] });
+    
+    res.json({ data: articles });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+/**
+ * Creates a new article
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const createArticle = async (req, res) => {
+  // Recovering the article data from the body of the request
+  const article = req.body;
+
+  // Creating a new article
+  const newArticleModel = new ArticleModel({ ...article, author: req.userId, createdAt: new Date().toISOString() });
+
+  try {
+    // Saving the article
+    await newArticleModel.save();
+    res.status(201).json(newArticleModel);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
+/**
+ * Updates an existing article
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const updateArticle = async (req, res) => {
+  // Recovering the id from the parameter
+  const { id } = req.params;
+  // Recovering the article data from the body of the request
+  const { title, description, author, bannerImage, tags } = req.body;
+
+  // If there's no existing id display a message
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send(`No article with id: ${id}`);
+
+  const updatedArticle = { author, title, description, tags, bannerImage, _id: id };
+  
+  // Find the article and update it
+  await ArticleModel.findByIdAndUpdate(id, updatedArticle, { new: true });
+
+  res.json(updatedArticle);
+};
+
+/**
+ * Deletes an existing article
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const deleteArticle = async (req, res) => {
+  // Recovering the id from the parameter
+  const { id } = req.params;
+
+  // If there's no existing id display a message
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send('No article with that id');
+
+  // Find the article and delete it
+  await ArticleModel.findByIdAndRemove(id);
+
+  res.json({ message: 'Article deleted successfully' });
+};
+
+/**
+ * Likes the article
+ *
+ * @param {*} req - The request
+ * @param {*} res - The server response
+ */
+ const likeArticle = async (req, res) => {
+  // Recovering the id from the parameter
+  const { id } = req.params;
+
+  // If the user is not authenticated display a message
+  if(!req.userId)
+    return res.json({ message: 'Unauthenticated' });
+
+  // If there's no existing id display a message
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send('No article with that id');
+
+  // Find the article by id
+  const article = await ArticleModel.findById(id);
+  const index = article.likes.findIndex((id) => id === String(req.userId));
+
+  // Insert in an array the user id, the number of likes will be the indexes of the array
+  if(index === -1) {
+    article.likes.push(req.userId);
+  } else {
+    article.likes = article.likes.filter((id) => id !== String(req.userId));
+  }
+
+  // Find the article and update it
+  const updatedArticle = await ArticleModel.findByIdAndUpdate(id, article, { new: true });
+
+  res.json(updatedArticle);
+};
+
+export default router;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createArticle">createArticle</a></li><li><a href="global.html#deleteArticle">deleteArticle</a></li><li><a href="global.html#getArticle">getArticle</a></li><li><a href="global.html#getArticles">getArticles</a></li><li><a href="global.html#getArticlesBySearch">getArticlesBySearch</a></li><li><a href="global.html#likeArticle">likeArticle</a></li><li><a href="global.html#updateArticle">updateArticle</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Wed Jun 16 2021 21:07:31 GMT+0200 (hora de verano de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
