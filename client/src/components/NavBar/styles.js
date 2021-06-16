@@ -80,8 +80,9 @@ export default makeStyles((theme) => ({
     },
   },
   root: {
-    width: 250,
+    width: 300,
     color: 'white',
+    margin: theme.spacing(1),
   },
   subheader: {
     color: 'white',

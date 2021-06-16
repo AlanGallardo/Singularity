@@ -23,7 +23,7 @@ const articleReducer = (state = { isLoading: true, articles: [] }, action) => {
         numberOfPages: action.payload.numberOfPages,
       };
     case FETCH_ARTICLE:
-      return { ...state, article: action.payload }
+      return { ...state, article: action.payload };
     case FETCH_BY_SEARCH:
       return { ...state, articles: action.payload };
     case CREATE:

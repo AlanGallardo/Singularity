@@ -160,13 +160,7 @@ const NavBar = () => {
               </ListItemIcon>
               <ListItemText primary="Forum" />
             </ListItem>
-
-            <ListItem button onClick={openAuthors}>
-              <ListItemIcon>
-                <RecordVoiceOverOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText primary="Authors" />
-            </ListItem>
+            
           </List>
         </Drawer>
         <Avatar component={Link} to="/" variant="square" src={logo} />
