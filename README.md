@@ -7,6 +7,25 @@ you or someone else post.
 Check it by yourself -> [Singularity Website](https://singularityweb.netlify.app/) \
 If you want to see the demo video of the app go to -> [Singularity Demo](https://www.youtube.com/watch?v=HyXJIog1YF8&feature=youtu.be)
 
+# List of users
+This is the list of users registered in the website: \
+
+email -> `erwsch@singularity.com` \
+password -> `12345`
+
+email -> `isanew@singularity.com` \
+password -> `12345`
+
+email -> `maxpla@singularity.com` \
+password -> `12345`
+
+email -> `carsag@singularity.com` \
+password -> `12345
+
+email -> `marcur@singularity.com` \
+password -> `12345`
+
+
 # Structure
 The website was built using the MERN Stack. MERN stands for:
 - **MongoDB**: A no-relational oriented to documents database.
@@ -27,13 +46,11 @@ server-side.
 # Installation in local
 If you want to run the web on your local machine, please follow these steps:
 - Download the code.
-- Go to `client/src/api/index.js` and **change the URL of the line 3** from \
-`https://singularityapi.herokuapp.com/` to `http://localhost:5000`
-- You will have to run both, client and server side, so: \
-`cd client` in one terminal \
-`cd server` in the other terminal
-- Now, in order to install all the dependencies, run in both terminals: \
+- You won't need to run the server-side since it's deployed on the internet \
+but you will need to run the client-side, so: \
+`cd client` 
+- Now, in order to install all the dependencies, run: \
 `npm install`
-- Once the installations are complete you can run the following command in both terminals: \
+- Once the installation is complete you can run the following command: \
 `npm start`
 - It will lead you automatically to the website, if not, click this link [http://localhost:3000](http://localhost:3000)
