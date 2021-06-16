@@ -8,7 +8,7 @@ Check it by yourself -> [Singularity Website](https://singularityweb.netlify.app
 If you want to see the demo video of the app go to -> [Singularity Demo](https://www.youtube.com/watch?v=HyXJIog1YF8&feature=youtu.be)
 
 # List of users
-This is the list of users registered in the website: \
+This is the list of users registered in the website:
 
 email -> `erwsch@singularity.com` \
 password -> `12345`
