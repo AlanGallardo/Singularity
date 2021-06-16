@@ -4,7 +4,8 @@ You can also create your own articles if you are a premium user. \
 The website also has a forum to discuss with other users questions that \
 you or someone else post.
 
-Check it by yourself -> [Singularity Website](https://singularityweb.netlify.app/)
+Check it by yourself -> [Singularity Website](https://singularityweb.netlify.app/) \
+If you want to see the demo video of the app go to -> [Singularity Demo](https://www.youtube.com/watch?v=HyXJIog1YF8&feature=youtu.be)
 
 # Structure
 The website was built using the MERN Stack. MERN stands for:
@@ -19,6 +20,8 @@ server-side.
 ![Singularity Structure](https://github.com/AlanGallardo/Singularity/blob/master/docs/estructura.png?raw=true)
 
 ## Database structure
+
+![Database Structure](https://github.com/AlanGallardo/Singularity/blob/master/docs/E-R.png?raw=true)
 
 
 # Installation in local
