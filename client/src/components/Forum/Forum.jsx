@@ -19,7 +19,7 @@ import styles from './styles';
 
 const Forum = () => {
   const [openForm, setOpenForm] = useState(false);
-  const { questions, isLoading } = useSelector((state) => console.log(state));
+  const { questions, isLoading } = useSelector((state) => state.questions);
   const dispatch = useDispatch();
   const classes = styles();
   const user = JSON.parse(localStorage.getItem('profile'));

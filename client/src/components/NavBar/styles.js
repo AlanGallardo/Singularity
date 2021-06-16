@@ -61,6 +61,9 @@ export default makeStyles((theme) => ({
     color: '#c5c5c5',
     margin: theme.spacing(1, 5, 0, 0),
     backgroundColor: 'inherit',
+    '&:hover': {
+      color: 'white',
+    }
   },
   sectionDesktop: {
     color: 'white',

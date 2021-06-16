@@ -19,6 +19,7 @@ import {
   ListItemText,
   Modal,
   Paper,
+  Tooltip,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
@@ -172,20 +173,26 @@ const NavBar = () => {
         <Search />
         <div className={classes.grow} />
         <div className={classes.sectionDesktop}>
-          <a href="https://www.linkedin.com/in/alangallardoclemente/" target="_blank">
-            <Avatar className={classes.options}><YouTubeIcon /></Avatar>
-          </a>
-          <a href="https://www.linkedin.com/in/alangallardoclemente/" target="_blank">
-            <Avatar className={classes.options}><LinkedInIcon /></Avatar>
-          </a>
+          <Tooltip title="Demo Video" placement="left">
+            <a href="https://youtu.be/HyXJIog1YF8" target="_blank">
+              <Avatar className={classes.options}><YouTubeIcon /></Avatar>
+            </a>
+          </Tooltip>
+          <Tooltip title={"Linkedin Profile"} placement="left">
+            <a href="https://www.linkedin.com/in/alangallardoclemente/" target="_blank">
+              <Avatar className={classes.options}><LinkedInIcon /></Avatar>
+            </a>
+          </Tooltip>
 
-          <IconButton edge="end" color="inherit" onClick={openLoginMenu}>
-            {user ? (
-              <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
-            ) : (
-              <img src={loginImage} alt="img" height="30" />
-            )}
-          </IconButton>
+          <Tooltip title={"Login/Logout"} placement="bottom">
+            <IconButton edge="end" color="inherit" onClick={openLoginMenu}>
+              {user ? (
+                <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
+              ) : (
+                <img src={loginImage} alt="img" height="30" className={classes.loginImage} />
+              )}
+            </IconButton>
+          </Tooltip>
 
           <Menu
             id="article-menu"

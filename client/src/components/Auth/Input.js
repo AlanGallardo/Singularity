@@ -18,9 +18,9 @@ const Input = ({
     <Grid item xs={12} sm={half ? 6 : 12}>
       <TextField 
         name={name}
+        required
         onChange={handleChange}
         variant="outlined"
-        required
         fullWidth
         label={label}
         autoFocus={autoFocus}

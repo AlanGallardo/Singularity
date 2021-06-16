@@ -26,7 +26,7 @@ const Articles = ({ setCurrentId }) => {
 
   return (
     isLoading ? <CircularProgress /> : (
-      <Grid className={classes.container} container alignItems="stretch" spacing={3}>
+      <Grid container spacing={3}>
         {articles.map((article) => (
           <Grid key={article._id} item xs={12} sm={12} md={6} lg={3}>
             <Article article={article} setCurrentId={setCurrentId} />

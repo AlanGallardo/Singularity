@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +38,7 @@ const Form = ({
     setText('');
   }
 
-  const handleSubmit = async (e) => {
+  const handleForm = async (e) => {
     if (currentId)
       dispatch(updateArticle(currentId, { ...articleData, name: user?.result?.name, authorImage: user?.result?.imageUrl }));
     else {
@@ -61,10 +61,9 @@ const Form = ({
 
   return (
     <Paper className={classes.paper}>
-      <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
+      <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleForm}>
         <Typography variant="h6">{currentId ? 'Editing' : 'Creating'} an Article</Typography>
         <TextField
-          name="title"
           variant="outlined"
           label="Title"
           fullWidth
@@ -72,7 +71,6 @@ const Form = ({
           onChange={(e) => setArticleData({ ...articleData, title: e.target.value })}
         />
         <TextField
-          name="tags"
           variant="outlined"
           label="Tags"
           fullWidth

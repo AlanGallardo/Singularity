@@ -26,7 +26,7 @@ const Auth = () => {
     setShowPassword(false);
   }
 
-  const handleSubmit = (e) => {
+  const handleAuth = (e) => {
     e.preventDefault();
     
     if(isSignup)
@@ -63,7 +63,7 @@ const Auth = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant="h5">{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form className={classes.form} onSubmit={handleAuth}>
           <Grid container spacing={2}>
             {isSignup && (
               <>
@@ -97,7 +97,7 @@ const Auth = () => {
             />
             {isSignup &&
               <Input
-                name="confirm"
+                name="repeat"
                 label="Repeat Password"
                 type="password"
                 handleChange={handleChange}

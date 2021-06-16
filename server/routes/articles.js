@@ -13,6 +13,7 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
+// Article Routes
 router.get('/', getArticles);
 router.get('/search', getArticlesBySearch);
 router.get('/:id', getArticle);

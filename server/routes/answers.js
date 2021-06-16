@@ -10,6 +10,7 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
+// Answer Routes
 router.get('/:id', getAnswer);
 router.post('/', auth, createAnswer);
 router.patch('/:id', auth, updateAnswer);
