@@ -16,6 +16,8 @@ UI of the website.
 - **NodeJS**: A runtime environment that allows the execution of JavaScript in the \
 server-side.
 
+![Singularity Structure](https://github.com/AlanGallardo/Singularity/blob/master/docs/estructura.png?raw=true)
+
 ## Database structure
 
 
