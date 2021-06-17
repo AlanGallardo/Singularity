@@ -36,11 +36,11 @@ UI of the website.
 - **NodeJS**: A runtime environment that allows the execution of JavaScript in the \
 server-side.
 
-![Singularity Structure](https://github.com/AlanGallardo/Singularity/blob/master/docs/estructura.png?raw=true)
+![Singularity Structure](https://github.com/AlanGallardo/Singularity/blob/master/resources/estructura.png?raw=true)
 
 ## Database structure
 
-![Database Structure](https://github.com/AlanGallardo/Singularity/blob/master/docs/E-R.png?raw=true)
+![Database Structure](https://github.com/AlanGallardo/Singularity/blob/master/resources/E-R.png?raw=true)
 
 
 # Installation in local
