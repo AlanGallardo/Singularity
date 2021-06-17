@@ -5,7 +5,8 @@ The website also has a forum to discuss with other users questions that \
 you or someone else post.
 
 Check it by yourself -> [Singularity Website](https://singularityweb.netlify.app/) \
-If you want to see the demo video of the app go to -> [Singularity Demo](https://www.youtube.com/watch?v=HyXJIog1YF8&feature=youtu.be)
+If you want to see the demo video of the app go to -> [Singularity Demo](https://www.youtube.com/watch?v=HyXJIog1YF8&feature=youtu.be) \
+The technical documentation is in the following link -> [Singularity Documentation](https://github.com/AlanGallardo/Singularity/blob/master/resources/Memorias_Singularity.pdf)
 
 # List of users
 This is the list of users registered in the website:
